@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { VehicleWithLastService } from "@/types";
 import { formatDate } from "@/lib/utils/format";
 import { CalendarDays } from "lucide-react";
+import { DeleteVehicleDialog } from "@/components/vehicles/delete-vehicle-dialog";
 
 interface VehicleListProps {
   vehicles: VehicleWithLastService[];
@@ -12,7 +13,7 @@ interface VehicleListProps {
 export function VehicleList({ vehicles }: VehicleListProps) {
   if (vehicles.length === 0) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-[200px]">
+      <div className="flex-1 flex items-center justify-center min-h-200">
         <p className="text-zinc-500 text-sm">No hay vehículos registrados</p>
       </div>
     );
@@ -39,6 +40,7 @@ export function VehicleList({ vehicles }: VehicleListProps) {
             <th className="text-right text-xs font-medium text-zinc-500 uppercase tracking-wider px-4 py-3">
               Último servicio
             </th>
+            <th className="w-12 px-4 py-3" />
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-800/50">
@@ -83,6 +85,14 @@ export function VehicleList({ vehicles }: VehicleListProps) {
                   <span className="text-sm text-zinc-600">—</span>
                 )}
               </td>
+              <td className="px-4 py-3.5 text-right">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <DeleteVehicleDialog
+                    vehicleId={vehicle.id}
+                    vehicleLabel={`${vehicle.licensePlate} (${vehicle.ownerName})`}
+                  />
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -91,12 +101,14 @@ export function VehicleList({ vehicles }: VehicleListProps) {
       {/* Mobile cards */}
       <div className="sm:hidden divide-y divide-zinc-800/50">
         {vehicles.map((vehicle) => (
-          <Link
+          <div
             key={vehicle.id}
-            href={`/vehicles/${vehicle.id}`}
-            className="flex items-center justify-between px-4 py-4 active:bg-zinc-900/50 transition-colors"
+            className="group relative flex items-center justify-between px-4 py-4 active:bg-zinc-900/50 transition-colors"
           >
-            <div className="min-w-0 flex-1 space-y-1">
+            <Link
+              href={`/vehicles/${vehicle.id}`}
+              className="min-w-0 flex-1 space-y-1"
+            >
               <p className="text-sm font-medium text-zinc-200 truncate">
                 {vehicle.ownerName}
               </p>
@@ -109,16 +121,24 @@ export function VehicleList({ vehicles }: VehicleListProps) {
                 </span>
                 <span>{vehicle.currentMileage.toLocaleString("es-AR")} km</span>
               </div>
+            </Link>
+            <div className="shrink-0 ml-3 flex items-center gap-3">
+              <div className="text-right">
+                {vehicle.lastServiceDate ? (
+                  <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                    <CalendarDays className="size-3" />
+                    <span>{formatDate(vehicle.lastServiceDate)}</span>
+                  </div>
+                ) : null}
+              </div>
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity -mr-1.5">
+                <DeleteVehicleDialog
+                  vehicleId={vehicle.id}
+                  vehicleLabel={`${vehicle.licensePlate} (${vehicle.ownerName})`}
+                />
+              </div>
             </div>
-            <div className="shrink-0 ml-3 text-right">
-              {vehicle.lastServiceDate ? (
-                <div className="flex items-center gap-1.5 text-xs text-zinc-500">
-                  <CalendarDays className="size-3" />
-                  <span>{formatDate(vehicle.lastServiceDate)}</span>
-                </div>
-              ) : null}
-            </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>
