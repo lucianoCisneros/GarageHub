@@ -42,12 +42,6 @@ export default async function DashboardLayout({
             >
               Tablero
             </Link>
-            <Link
-              href="/vehicles"
-              className="text-sm text-zinc-400 hover:text-zinc-200 px-2 sm:px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
-            >
-              Vehículos
-            </Link>
             <form action={signOutAction}>
               <Button
                 type="submit"
