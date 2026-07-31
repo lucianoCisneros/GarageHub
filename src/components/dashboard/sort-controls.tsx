@@ -51,7 +51,7 @@ export function SortControls() {
       <select
         value={selectValue}
         onChange={handleChange}
-        className="h-10 pl-10 pr-4 bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm rounded-xl
+        className="h-14 pl-10 pr-4 bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm rounded-xl
           focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:border-amber-500/50
           appearance-none cursor-pointer hover:border-zinc-700 transition-colors
           [&>option]:bg-zinc-900 [&>option]:text-zinc-300"
